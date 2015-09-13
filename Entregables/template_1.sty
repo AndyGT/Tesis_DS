@@ -1,0 +1,156 @@
+\usepackage{float}
+\usepackage{morefloats}
+\usepackage{graphicx}
+\usepackage{tcolorbox}
+\usepackage{rotating}
+\usepackage{longtable}
+\usepackage{colortbl}
+%\usepackage{natbib}
+%\newenvironment{scaleb}{ \scalebox{0.4}{} {} }
+%\newenvironment{scaleb}{ \tiny{} }
+% biber
+\usepackage[autostyle]{csquotes}
+\usepackage{setspace}
+\setstretch{1.25}
+% \setstretch{1.1}
+
+\usepackage{bbm}
+\usepackage{geometry} 
+\geometry{letterpaper}
+% \usepackage[spanish]{babel}
+
+%\usepackage[spanish,es-nodecimaldot]{babel}
+% \usepackage[papersize={170mm,225mm},bmargin=20mm,lmargin=25mm,rmargin=20mm]{geometry}  
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+
+
+%\pagestyle{myheadings}
+\usepackage{verbatim}  
+\usepackage{enumerate}
+
+\usepackage{subfig}
+\usepackage{fancyhdr} 
+\pagestyle{fancy} 
+%\usepackage{multicol}
+%\usepackage{rotating}
+% \usepackage{amsmath, amsthm, amssymb}
+\usepackage{amsmath,amsfonts,amssymb,amsthm,epsfig,epstopdf,titling,url,array}
+
+\usepackage{lscape}
+\usepackage{marvosym} % Allows the use of symbols
+\usepackage{float}
+% \usepackage{cite}
+% \usepackage{bibentry}
+
+
+\usepackage[
+    backend=biber,
+    style=authoryear-icomp,
+    sortlocale=de_DE,
+    natbib=true,
+    url=false,
+    doi=true,
+    eprint=false
+]{biblatex}
+\addbibresource{bibliografia.bib}
+
+\usepackage[]{hyperref}
+\hypersetup{
+% Turn on this if you prefer to have links colored instead of marked with squares
+colorlinks = true,
+linkcolor = black,
+urlcolor = blue,
+citecolor = black,
+% pdfpagemode = UseNone
+}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+
+\renewcommand{\headrulewidth}{.3pt} 
+\renewcommand{\footrulewidth}{.0pt}
+
+% \renewcommand{\chaptermark}[1]{\markright{#1}}
+% \renewcommand{\sectionmark}[1]{\markright{#1}}
+
+\usepackage{fancyhdr} 
+\pagestyle{fancy} 
+
+
+\newenvironment{myexampleblock}[1]{%
+    \tcolorbox[beamer,%
+    noparskip,breakable,
+    colback=LightGreen,colframe=DarkGreen,%
+    colbacklower=LimeGreen!75!LightGreen,%
+    title=#1]}%
+    {\endtcolorbox}
+
+\newenvironment{myalertblock}[1]{%
+    \tcolorbox[beamer,%
+    noparskip,breakable,
+    colback=LightCoral,colframe=DarkRed,%
+    colbacklower=Tomato!75!LightCoral,%
+    title=#1]}%
+    {\endtcolorbox}
+
+\newenvironment{myblock}[1]{%
+    \tcolorbox[beamer,%
+    noparskip,breakable,
+    colback=LightBlue,colframe=DarkBlue,%
+    colbacklower=DarkBlue!75!LightBlue,%
+    title=#1]}%
+    {\endtcolorbox}
+
+%----------------------------------------------------------------------------------------
+%	TITLE PAGE
+%----------------------------------------------------------------------------------------
+
+%\newcommand*{\titleGM}{\begingroup % Create the command for including the title page in the document
+\renewcommand{\maketitle}{\begingroup
+\setcounter{page}{0}
+\hbox{% Horizontal box\vfill \includegraphics[scale=.3]{ITAM.jpeg}
+\thispagestyle{empty}{\includegraphics[width=60mm]{stevens.png} }
+\hspace*{0.015\textwidth} % Whitespace to the left of the title page
+\rule{0.05pt}{\textheight} % Vertical line
+\hspace*{0.051\textwidth} % Whitespace between the vertical line and title page text
+\parbox[b]{\textwidth}{ % Paragraph box which restricts text to less than the width of the page
+
+{\noindent\Large\scshape Stevens Institute of Technology:\\ Summer Research Institute Program  \\[0.7\baselineskip] }\\[1\baselineskip] % Title
+{\large  ``Social Media and Climatic Based Proxies for\\ Disaster Resource Allocation: Mexican Case" }\\[2\baselineskip] % Tagline or further description
+
+{\large \textsc{Andrea Garcia Tapia}}\\ % Author name
+
+{\large \textit{Advisors:}}\\
+
+{\large \textsc{Dante Gama Dessavre}}\\
+{\large \textsc{Jose Ramirez-Marquez}}\\
+
+{\large **Abstract**
+
+
+Over the last decade, Mexico has experienced a sharp increase in the economic costs associated with climatic events, such as floods, tropical cyclones and heavy rain.  Different risk transfer instruments for disaster mitigation have been used in Mexico. At Federal level the main instruments are the National Disaster Fund (FONDEN) and the Catastrophic Bond (CATBOND). While CATBOND has clear operational rules and triggers, the resource allocation of the National Disaster Fund (FONDEN) is not clear.  This paper address the main determinants for FONDEN using a set of political, socioeconomic and  meteorological data ……( SVM & PCA ) …. for all 32 Mexican federal entities for the period 2002-2007. 
+
+ Our results show that the main determinants for FONDEN resource allocation are : ..............., these findings lend us an important insight into the mechanisms …………………………
+
+Based on our results, the recommendation for local governments is to develop an institutional structure that focuses on enhancing ……………….
+
+
+**Keywords:** Natural Disaster, Disaster National Funds }\\[2\baselineskip]
+
+{\large \today}\\[1\baselineskip] % Tagline or further description
+ \vspace{0.4\textheight} % Whitespace between the title block and the publisher
+{\noindent  \vfill  Castle Point on Hudson, Hoboken NJ 07030-5991\\ USA +1.201.216.5000} % Publisher and logo
+} }
+\endgroup}
+
+
+
+%----------------------------------------------------------------------------------------
+%  Header
+%----------------------------------------------------------------------------------------
+
+\fancyhead[R]{\scshape ITAM}
+\fancyhead[C]{\scshape Summer Research Institute Program}
+\fancyhead[L]{\scshape Stevens Institute of Technology}
+

@@ -1,0 +1,71 @@
+---
+title: "Stevens Institute of Technology Summer Project"
+author: "Andrea García Tapia"
+date: "07/10/15"
+output:
+  beamer_presentation
+---
+##Introduction 
+
+![Disaster Timeline September 2013](img/timeline.png)
+
+Follow the [Disaster Time Line](http://cdn.knightlab.com/libs/timeline/latest/embed/index.html?source=1wesPOVIPMQLbCplDyt5ENxd_H74QPUYk1GuBslD1mFY&font=Merriweather-NewsCycle&maptype=toner-lines&lang=en&height=650) to learn more about the evolution of Ingrid and Manuel tropical storms.
+
+##Disaster Risk Management 
+
+![Risk Managment Cycle](img/rmc.png)
+
+source: CATALYST winter Resilience Academy, 2013
+
+##Mexican Disaster Managment Process 
+
+![Mexican disaster Management](img/proceso.png)
+
+## Problem 
+
+Lack of information during the disaster Meangement Proces and no clear rules 
+
+![Shady](img/shady.png)
+
+## No clear rules 
+
+Neither at a municipal level, using rainfall as a damages proxy 
+
+![Shady](img/tipo_fen.png)
+
+##Objectives
+
+Develop and apply methods to assess the suitability of using news flows and precipitation data to characterize disater damages in Mexico looking forward to resource allocation improvement( disaster managment).
+
+We will work towards explaining the determinants of declaring or not declaring a disaster 
+
+##Working plan 
+
+* Analyze information flows using Newspaper, TV and radio data.
+* Correlation of news flows with precipitation data.
+* Correlation of news flows with damage  metrics (evaluation and public expenditure).
+* Accompanying interactive visualization tools
+
+
+
+##Workflow
+The workflow of the project is the following: 
+
+![Workflow](img/workflow_vf.png)
+
+##Information Sources 
+
+![Sources](img/sources.png)
+
+##News Porcesing 
+
+![Sources](img/news.png)
+
+
+## Project Time-Line
+
+![TL](img/p_tl.png)
+
+
+
+
