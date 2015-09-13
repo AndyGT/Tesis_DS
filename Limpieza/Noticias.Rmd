@@ -1,0 +1,52 @@
+
+
+library(plyr)
+library(dplyr)
+library(knitr)
+library(Hmisc)
+library(ggplot2)
+library(lubridate)
+
+
+#From The portal of "Eficiencia Informativa" we download the news related to "Ingrid"  AND "Manuel"
+#for the period 09/09/13-10/02/13
+
+#Leemos las bases 
+IM_1 <- read.csv("~/Dropbox/Tesis_CD/Datos/Noticias/I&M/IM_1.csv", stringsAsFactors=FALSE)
+IM_2 <- read.csv("~/Dropbox/Tesis_CD/Datos/Noticias/I&M/IM_2.csv", stringsAsFactors=FALSE)
+IM_3 <- read.csv("~/Dropbox/Tesis_CD/Datos/Noticias/I&M/IM_3.csv", stringsAsFactors=FALSE)
+IM_4 <- read.csv("~/Dropbox/Tesis_CD/Datos/Noticias/I&M/IM_4.csv", stringsAsFactors=FALSE)
+IM_5 <- read.csv("~/Dropbox/Tesis_CD/Datos/Noticias/I&M/IM_5.csv", stringsAsFactors=FALSE)
+IM_6 <- read.csv("~/Dropbox/Tesis_CD/Datos/Noticias/I&M/IM_6.csv", stringsAsFactors=FALSE)
+IM_7 <- read.csv("~/Dropbox/Tesis_CD/Datos/Noticias/I&M/IM_7.csv", stringsAsFactors=FALSE)
+IM_8 <- read.csv("~/Dropbox/Tesis_CD/Datos/Noticias/I&M/IM_8.csv", stringsAsFactors=FALSE)
+IM_9 <- read.csv("~/Dropbox/Tesis_CD/Datos/Noticias/I&M/IM_9.csv", stringsAsFactors=FALSE)
+IM_10 <- read.csv("~/Dropbox/Tesis_CD/Datos/Noticias/I&M/IM_10.csv", stringsAsFactors=FALSE)
+IM_11 <- read.csv("~/Dropbox/Tesis_CD/Datos/Noticias/I&M/IM_11.csv", stringsAsFactors=FALSE)
+IM_12 <- read.csv("~/Dropbox/Tesis_CD/Datos/Noticias/I&M/IM_12.csv", stringsAsFactors=FALSE)
+IM_13 <- read.csv("~/Dropbox/Tesis_CD/Datos/Noticias/I&M/IM_13.csv", stringsAsFactors=FALSE)
+IM_14 <- read.csv("~/Dropbox/Tesis_CD/Datos/Noticias/I&M/IM_14.csv", stringsAsFactors=FALSE)
+IM_15 <- read.csv("~/Dropbox/Tesis_CD/Datos/Noticias/I&M/IM_15.csv", stringsAsFactors=FALSE)
+
+# ahora la pegamos en una basesota 
+
+IM <- rbind(IM_1 ,
+            IM_2 ,
+            IM_3 ,
+            IM_4 ,
+            IM_5 ,
+            IM_6 ,
+            IM_7 ,
+            IM_8 ,
+            IM_9 ,
+            IM_10 ,
+            IM_11 ,
+            IM_12 ,
+            IM_13 ,
+            IM_14 ,
+            IM_15 )
+
+# las guardamos
+write.csv(IM, file = "IM.csv", row.names=FALSE)
+
+
