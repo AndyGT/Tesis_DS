@@ -1,0 +1,91 @@
+---
+title: "Noticias_3"
+author: "Andrea García Tapia"
+date: "3 de julio de 2015"
+output: html_document
+---
+```{r setup, echo=FALSE, include=FALSE}
+options(digits=2)
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(reshape2)
+library(igraph)
+library(tm)
+```
+#Related Themes 
+
+```{r}
+load(file='~/Dropbox/Tesis_CD/Datos/Noticias/noticias.Rdata')
+
+#limpiamos el corpus 
+corp.com <- Corpus(VectorSource(noticias), readerControl = list(language ='spa'))
+corp.com.1 <- tm_map(corp.com, stripWhitespace)
+corp.com.2 <- tm_map(corp.com.1, tolower)
+corp.com.2
+corp.com.2.5 <- tm_map(corp.com.2,  function(x){
+                                              gsub('[|-«»\\\',;:".!¡¿?*\\(\\)]','',x)
+                                              }) 
+
+corp.com.3 <- tm_map(corp.com.2.5, function(x) iconv(x, to='UTF-8-MAC', sub='byte'))
+corp.com.3
+```
+We use the stop words list used in Analytics Methods class
+```{r}
+mis_stops <- as.character(read.table("~/Dropbox/Tesis_CD/Datos/espanol_stops.txt")[,1])
+head(mis_stops);tail(mis_stops)
+```
+
+```{r}
+corp.com.4 <- tm_map(corp.com.3, removeWords, mis_stops)
+corp.com.4
+```
+
+
+```{r}
+library(Rstem)
+
+corp.4 <- tm_map(corp.com.4, function(x){
+                                          z <- strsplit(x, " +")[[1]]
+                                          z.stem <- wordStem(z, language="spanish")
+                                          PlainTextDocument(paste(z.stem, collapse=" "))
+                                        })
+```
+
+Usaremos sólo términos que aparecen al menos 50 veces.
+
+```{r, tidy=FALSE}
+dtm <- TermDocumentMatrix(corp.4,
+              control = list(bounds=list(global=c(50,Inf)), 
+                    stopwords=FALSE,
+                    weighting = function(x){ 
+                      weightTfIdf(x, normalize = FALSE)
+                      }))
+dtm
+``````
+
+#Descomposición de valores singulares 
+Una  aplicación es la construcción de clusters. Empezamos
+utilizanod unas 20-200 componentes (típicamente):
+
+```{r}
+library(irlba)
+library(Matrix)
+X <- sparseMatrix(i = dtm$i, j = dtm$j, x = dtm$v)
+d.3 <- irlba(X, nu = 30, nv = 30)
+```
+
+El número de clusters depende de qué tanta variedad esperamos en 
+la colección de textos. Algunos clusters (en algunos casos el más grande) puede
+ser un cluster heterogéneo cuyas características no fueron capturadas por las
+dimensiones latentes:
+
+```{r}
+set.seed(12900)
+grupos <- kmeans(d.3$v, centers = 20, iter.max = 50)
+cl <- grupos$cluster
+table(cl)
+head(noticias[cl == 6])
+head(noticias[cl == 13])
+```

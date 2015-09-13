@@ -1,0 +1,31 @@
+---
+title: "FONDEN historica"
+author: "Andrea García Tapia"
+date: "3 de agosto de 2015"
+output: html_document
+---
+
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(plyr)
+library(dplyr)
+library(knitr)
+library(Hmisc)
+library(ggplot2)
+library(lubridate)
+
+#Documentos 
+FONDEN_99_13 <- read.csv("~/Dropbox/Tesis_CD/Datos/FONDEN/FONDEN_99_13.csv", stringsAsFactors=FALSE)
+#Deflactor base 2015
+INPC_99_15 <- read.csv("~/Dropbox/Tesis_CD/Datos/INPC_99_15.csv", stringsAsFactors=FALSE)
+names(INPC_99_15)<-c("a_noAut","deflactor")
+INPC_99_15 <- 
+# pegamos las bases 
+FONDEN_C <- merge(FONDEN_99_13,INPC_99_15, by = intersect(names(FONDEN_99_13), names(INPC_99_15)))
+# deflactamos 
+bd1 <- transform(FONDEN_C, Monto_FONDEN_d = Monto_FONDEN / deflactor, 
+                           Monto_Estatal_d = Monto_Estatal/deflactor,
+                          Total_d = Total / deflactor) 
+names(bd1)
+describe(bd1)
+
+```

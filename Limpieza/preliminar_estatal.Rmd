@@ -1,0 +1,65 @@
+---
+title: "Base limpia CENAPRED"
+author: "Andrea García Tapia"
+date: "10 de julio de 2015"
+output: html_document
+---
+
+```{r}
+base.limpia.2000.2010 <- read.csv("~/Dropbox/Tesis_CD/Datos/CENAPRED/base limpia 2000-2010.csv", stringsAsFactors=FALSE)
+names(base.limpia.2000.2010)
+
+bd <- data.frame(base.limpia.2000.2010[1:4], base.limpia.2000.2010[11:21], base.limpia.2000.2010[23],base.limpia.2000.2010[25])
+library(Hmisc)
+library(ggplot2)
+library(corrplot)
+library (devtools)
+library(rCharts)
+library(ggplot2)
+library(reshape2)
+#install.packages ("RColorBrewer")
+library(RColorBrewer)
+library(Hmisc)
+library(dplyr)
+
+
+describe(bd)
+names(bd) <- c("FI", "FF", "DOF", "duracion", "muertos", "afectados", "viviendas", "escuelas", "hospitales", "cultivos", "caminos", "dañosMx", "dañosUsd", "clve_edo","edo", "fenomeno", "declaratoria")
+
+write.csv(bd, file="preliminar_estatal.csv")
+bd <- read.csv("~/Dropbox/Tesis_CD/Datos/preliminar_estatal.csv", stringsAsFactors=FALSE)
+
+corrplot(cor(bd))
+dt <- dTable (bd, sPaginationType = 'full_numbers')
+dt
+
+names(bd)
+bd.1 <- mutate(bd, ln_dañ = log(dañosMx), ln_afec= log(afectados))
+p.1 <- ggplot(data=bd.1) + 
+  geom_point(aes(x = ln_dañ, y= ln_afec, colour = declaratoria ))
+p.1
+
+p.1.1 <- ggplot(data=bd.1) + 
+  geom_point(aes(x = ln_dañ, y= ln_afec, colour = declaratoria ))+
+  facet_wrap(~fenomeno)
+p.1.1
+
+
+p.1.2 <- ggplot(data=bd.1) + 
+  geom_point(aes(x = ln_dañ, y= ln_afec, colour = declaratoria ))+
+  facet_wrap(fenomeno~ DOF)
+p.1.2
+p.2 <- ggplot(data=bd.1) + 
+  geom_point(aes(x = ln_dañ, y= ln_afec, colour = declaratoria ))
+p.1
+
+
+
+p5.2<- nPlot(afectados ~ dañosMx, group = 'declaratoria', data = bd.1, type = 'scatterChart', facet_wrap(~Tipo.de.fenomeno))
+p5.2$xAxis(axisLabel = 'Weight')
+p5.2
+
+p5.3<- nPlot(ln_afec ~ ln_dañ, group = 'declaratoria', data = bd.1, type = 'scatterChart', facet_wrap(~Tipo.de.fenomeno))
+p5.3$xAxis(axisLabel = 'Weight')
+p5.3
+```

@@ -1,0 +1,82 @@
+---
+title: "Preliminar"
+author: "Andrea García Tapia"
+date: "9 de julio de 2015"
+output: html_document
+---
+
+
+```{r}
+library(shiny) 
+runExample("01_hello")
+
+shinyUI(fluidPage(
+
+  # Application title
+  titlePanel("Hello Shiny!"),
+
+  # Sidebar with a slider input for the number of bins
+  sidebarLayout(
+    sidebarPanel(
+      sliderInput("bins",
+                  "Number of bins:",
+                  min = 1,
+                  max = 50,
+                  value = 30)
+    ),
+
+    # Show a plot of the generated distribution
+    mainPanel(
+      plotOutput("distPlot")
+    )
+  )
+))
+
+preliminar_1 <- read.csv("~/Dropbox/Tesis_CD/Datos/preliminar_1.csv", stringsAsFactors=FALSE)
+```
+
+
+```{r}
+library (devtools)
+library(rCharts)
+library(ggplot2)
+library(reshape2)
+#install.packages ("RColorBrewer")
+library(RColorBrewer)
+library(Hmisc)
+
+describe(preliminar_1$Tipo.de.fenomeno)
+# eliminamos los Tipos de fenomeno BT, MT y SD 
+bd <- subset(preliminar_1, Tipo.de.fenomeno != c("BT", "MT", "SD"))
+
+describe(bd$Tipo.de.fenomeno)
+
+qplot( data=melt(cor(preliminar_1)), fill=value, geom="tile")
+
+
+dt <- dTable (bd, sPaginationType = 'full_numbers')
+dt
+
+myplot <- ggplot(data=preliminar_1)
+p.1 <- myplot + geom_point(aes(x = lluvia, y= IM, colour = Tipo.de.declaratoria ))
+p.1
+p.2 <- myplot + geom_point(aes(x = lluvia, y= IM, colour = Tipo.de.fenomeno, size = Tipo.de.declaratoria))
+p.3 <- myplot + geom_point(aes(x = Tipo.de.fenomeno, y= IM, colour = Tipo.de.declaratoria, size =lluvia ))
+p.4 <- myplot + geom_point(aes(x = lluvia, y= IM, colour = Tipo.de.declaratoria, size =lluvia ))
+p.2
+p.3
+p.4
+#por tipo de fenómeno 
+p.5 <- ggplot(data=preliminar_1) + 
+  geom_point(aes(x = lluvia, y= IM, colour = Tipo.de.declaratoria, position = "jitter" )) +
+  facet_wrap(~Tipo.de.fenomeno)
+p.5
+
+# con zoom 
+p5.1<- nPlot(IM ~ lluvia, group = 'Tipo.de.declaratoria', data = preliminar_1, type = 'scatterChart', facet_wrap(~Tipo.de.fenomeno))
+p5.1$xAxis(axisLabel = 'Weight')
+p5.1
+
+corrplot(corr(preliminar_1))
+
+````

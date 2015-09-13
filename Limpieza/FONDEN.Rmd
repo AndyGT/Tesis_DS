@@ -1,0 +1,90 @@
+---
+title: "Limpieza Base FONDEN"
+author: "Andrea García Tapia"
+date: "23 de junio de 2015"
+output: html_document
+---
+```{r, echo=FALSE, warning=FALSE, message=FALSE}
+library(plyr)
+library(dplyr)
+library(knitr)
+library(Hmisc)
+library(ggplot2)
+library(lubridate)
+```
+
+#Introduction
+La base de datos de Recursos Autorizados por Declaratoria de Desastre del  [FONDEN](http://www.proteccioncivil.gob.mx/es/ProteccionCivil/Recursos_Autorizados_por_Declaratoria_de_Desastre) viene en PDF por año y la de apoyos para emergencias [SINAPROC[(http://www.proteccioncivil.gob.mx/es/ProteccionCivil/2013) viene por boletin y material usado.
+Para la elaboración de una base que abarcara los tres años de gasto público estatal y federal para atender las declaratorias de "Desastre""  generadas por las tormentas tropicales Ingrid y Manuel en septiembre del 2013 se elaboraron los siguietes pasos: 
+
+1) Conversión el PDF a un CVS
+2) Extracción de  las observaciónes durante el periodo 09/09/13 - 02/10/13
+3) Homologación campos (cada año cambiaba el formato del documento y la información que traia)
+4) Quitar acentos y similares
+5) Deflactar: se trajeron los montos a precio constante (real de 2015), para ello se utilizó el promedio anual del  Índice Nacional de Precios al Consumidor [INPC](http://www.inegi.org.mx/sistemas/indiceprecios/Estructura.aspx?idEstructura=112000200010&T=%C3%8Dndices%20de%20Precios%20al%20Consumidor&ST=Principales%20%C3%ADndices).
+
+
+
+Las bases estan guardadas en la carpeta de Datos -> FONDEN -> "FONDEN_IM_año"
+
+```{r, echo=FALSE}
+FIM_2013 <- read.csv("~/Dropbox/Tesis_CD/Datos/FONDEN/FONDEN_IM_2013.csv", stringsAsFactors=FALSE)
+
+FIM_2014 <- read.csv("~/Dropbox/Tesis_CD/Datos/FONDEN/FONDEN_IM_2014.csv", stringsAsFactors=FALSE)
+
+FIM_2015 <- read.csv("~/Dropbox/Tesis_CD/Datos/FONDEN/FONDEN_IM_2015.csv", stringsAsFactors=FALSE)
+```
+
+Las bases tienen 18 variables, la columna documento se refiere al documento de FONDEN del cual se obtuvieron los datos. Cabe mencionar que en 2014 se creó un Fondo extra llamado "FONDO GUERRERO"
+```{r}
+names(FIM_2013)
+str(FIM_2013)
+str(FIM_2014)
+str(FIM_2015)
+describe(FIM_2013)
+describe(FIM_2014)
+FIM_2015 <- data.frame( FIM_2015[1:2], as.character(FIM_2015[3]), FIM_2015[4:18])
+names(FIM_2015)[3] <-"Evento"
+
+describe(FIM_2015)
+
+```
+
+Ajuste por inflación 
+
+Año | INPC|  deflactor 
+-------- | ---------- | ---------
+2013 |	109.20|	0.940
+2014|	113.59|	0.978
+2015|	116.18|	1.000
+
+
+```{r}
+#deflactamos 2013 a precios constantes de 2015
+FIM_2013_1 <- data.frame( FIM_2013[1:9], (FIM_2013[10:12]*0.94),FIM_2013[13], (FIM_2013[14:18]*0.94))
+
+#deflactamos 2014 a precios constantes de 2015
+FIM_2014_1 <- data.frame( FIM_2014[1:9], (FIM_2014[10:12]*0.978),FIM_2014[13], (FIM_2014[14:18]*0.978))
+
+#unimos las tres bases 
+FIM <- rbind(FIM_2013_1, FIM_2014_1,FIM_2015)
+describe(FIM$Competencia)
+
+ggplot(FIM, aes(x = Competencia, y= Aportacion.Total , fill = Documento))+
+  geom_bar(stat="identity" )
+
+
+
+ggplot(FIM, aes(x = Competencia, y= Aportacion.Total)) + 
+  geom_bar(stat="identity" )+
+  facet_grid(Estado ~ Documento)
+
+ggplot(FIM, aes(x = Fecha.publicacion.DOF, y= Aportacion.Total, fill = Estado)) +geom_bar(stat="identity" )
+
+ggplot(FIM, aes(x = Solicitud.de.Declaratoria, y= Aportacion.Total, fill = Estado)) +geom_bar(stat="identity" )
+
+ggplot(FIM, aes(x = Sectores.Afectados, y= Aportacion.Total, fill = Estado)) +geom_bar(stat="identity" )
+
+write.csv(FIM, file = "FIM.csv", row.names=FALSE)
+```
+

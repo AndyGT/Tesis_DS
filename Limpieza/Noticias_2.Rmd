@@ -1,0 +1,47 @@
+---
+title: "Noticias_2"
+author: "Andrea García Tapia"
+date: "2 de julio de 2015"
+output: html_document
+---
+```{r, echo=FALSE, message=FALSE, warning=TRUE}
+options(digits=2)
+library(plyr)
+library(dplyr)
+library(knitr)
+library(Hmisc)
+library(ggplot2)
+library(lubridate)
+library(tidyr)
+library(stringr)
+library(reshape2)
+library(igraph)
+
+```
+
+#DataBase description
+
+The period of study we selected is 2 days before tropical storm Ingrid begin and 15 days after tropical storm Mauel ended. Since Eficiencia Informativa platform does not allowed to download all the news in a period we started with a small sample of the news related to "Ingrid"  *AND* "Manuel" for the period 09/09/13-10/02/13. 
+
+```{r}
+IM <- read.csv("~/Dropbox/Tesis_CD/Datos/Noticias/I&M/IM.csv", stringsAsFactors=FALSE)
+#hay un problema
+describe(IM[5]) # en la variable 5 (Tipo de Medio) 
+describe(IM[8])#Titulo
+describe(IM[9])
+describe(IM[10])
+describe(IM[12])
+unique(IM[5])
+#no hay problema 
+describe(IM[1:4])
+describe(IM[6:7])
+describe(IM[11])
+describe(IM[13:18])
+
+names(IM)
+head(IM)
+```
+Nos quedamos con solo el resumen tinformativo para poder extraer los temas 
+```{r}
+noticias <- IM[9]
+save(noticias, file='~/Dropbox/Tesis_CD/Limpieza/noticias.Rdata')
