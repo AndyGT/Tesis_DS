@@ -1,0 +1,76 @@
+---
+title: "lluvia"
+author: "Andrea García Tapia"
+date: "13 de septiembre de 2015"
+output: html_document
+---
+```{r}
+library(tidyr)
+library(dplyr)
+library(Hmisc)
+#bases que uso 
+#LaminasDiaria <- read.csv("~/Desktop/Tesis_DS/Datos/SMN/LaminasDiaria.csv", stringsAsFactors=FALSE)
+#clave_estatal_inegi <- read.csv("~/Desktop/Tesis_DS/Datos/clave_estatal_inegi.csv", stringsAsFactors=FALSE)
+```
+
+Esta base la tenemos que mutar  a que los estados esten en una columna , separar fechas, pegar la clave estatal y recortar por el periodo de interés
+
+```{r}
+names(LaminasDiaria)
+# Hay dos dias que tienen error 
+LaminasDiaria_1 = LaminasDiaria %>%filter(FECHA !="2013-04-30" & FECHA!= "2013-07-07")
+
+lluvia <- gather (LaminasDiaria_1, estado, lluvia, AGS:ZAC, na.rm = TRUE )
+lluvia_1 <- left_join(lluvia,clave_estatal_inegi, by = NULL)
+names(lluvia_1)
+unique(lluvia_1$CVE_ENT)
+describe(lluvia_1)
+# pegaron bien, ahora separemos las fechas 
+lluvia_2 <- lluvia_1 %>%
+                      mutate(fecha = as.Date(FECHA))
+
+lluvia_3 <- lluvia_2 %>% 
+  mutate(  año = as.numeric(format(fecha, "%Y")),
+           mes = as.numeric(format(fecha, "%m")),
+           dia = as.numeric(format(fecha, "%d"))
+           )
+#rm(lluvia_4)
+
+describe(lluvia_3)
+
+````
+Exploración 
+
+```{r}
+library(ggplot2)
+
+
+ggplot(lluvia_3, aes(x = año, y = lluvia, color = estado)) +
+  geom_line() + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+lluvia_4 <- subset (lluvia_3, año>2000)
+
+# guardo la base buena 
+write.csv(lluvia_4, file = "~/Desktop/Tesis_DS/Datos/procesados/lluvia_estatal_diaria")
+
+lluvia_5 <- LaminasDiaria_1 %>% mutate(FECHA = as.Date(FECHA))
+
+lluvia_5.1 <- lluvia_5 %>%
+  mutate(  año = as.numeric(format(FECHA, "%Y")),
+           mes = as.numeric(format(FECHA, "%m")),
+           dia = as.numeric(format(FECHA, "%d"))
+           )
+lluvia_5.2 <- subset(lluvia_5.1, año>2012)
+
+lluvia_6 <- lluvia_5.2%>%
+  filter(FECHA !="2013-04-30" & FECHA!= "2013-07-07" )
+
+ggplot(lluvia_5.2, aes(x = FECHA, y = Media.mapa)) +
+  geom_line() + 
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+```
+ERRORES en la base 
+Se disparanan los valores en 
+2013-04-30
+2013-07-07
